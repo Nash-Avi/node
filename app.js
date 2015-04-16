@@ -1,23 +1,7 @@
 var express = require('express'),
     mustacheExpress = require('mustache-express'),
-	mongoose = require('mongoose'),
 	router_article = require('./routes/article'),
 	router_index = require('./routes/index');
-
-// -----------------------------
-// Mongoose Setup
-mongoose.connect('mongodb://localhost/simpleapp');
-var db = mongoose.connection;
-var Article;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(callback) {
-	var articleSchema = mongoose.Schema({
-		title: String,
-		content: String
-	});
-
-	Article = mongoose.model('Article', articleSchema);
-});
 
 // -----------------------------
 // Express Setup
@@ -53,8 +37,3 @@ var server = app.listen(3000, function() {
 	console.log('Simple app listening at http://%s:%s', host, port);
 
 });
-
-
-function saveHandler(err, obj) {
-	if (err) return console.error(err);
-}
