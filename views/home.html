@@ -1,0 +1,24 @@
+<html>
+<head>
+	<title>My First Express App!</title>
+	<link href="site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<header>
+		<h1>{{ title }}</h1>
+	</header>
+
+	<section>
+		<p>{{ message }}</p>
+	</section>
+
+	{{#articles}}
+	<article>
+		<h2>{{title}}</h2>
+		<p>{{content}}</p>
+	</article>
+	{{/articles}}
+
+	<a href="/article/add">Add Article</a>
+</body>
+</html>
