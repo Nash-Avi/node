@@ -3,8 +3,6 @@ var router = express.Router();
 var data = require('../data/data');
 
 router.get('/', function(req, res, next) {
-	console.dir(data);
-
 	data.Article.find(function(err, articles) {
 		if (err) return console.error(err);
 		
