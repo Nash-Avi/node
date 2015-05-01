@@ -1,15 +1,23 @@
 var express = require('express'),
-    mustacheExpress = require('mustache-express'),
+	hbs = require('express-hbs'),
 	router_article = require('./routes/article'),
 	router_index = require('./routes/index');
 
 // -----------------------------
 // Express Setup
 var app = express();
+
+app.set('view engine', 'hbs');
+
+app.engine('hbs', hbs.express4({
+	defaultLayout: __dirname + '/views/layouts/main.hbs',
+	layoutsDir: __dirname + '/views/layouts/'
+}));
+
+
+app.set('views', __dirname + '/views');
+
 app.use(express.static('static'));
-app.engine('html', mustacheExpress());
-app.set('view engine', 'html');
-app.set('views', './views');
 
 app.use('/article', router_article);
 app.use('/', router_index);
