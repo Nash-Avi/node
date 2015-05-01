@@ -1,0 +1,18 @@
+{{!< main}}
+
+	<header>
+		<h1>{{ title }}</h1>
+	</header>
+
+	<section>
+		<p>{{ message }}</p>
+	</section>
+
+	{{#articles}}
+	<article>
+		<h2>{{title}}</h2>
+		<p>{{content}}</p>
+	</article>
+	{{/articles}}
+
+	<a href="/article/add">Add Article</a>
