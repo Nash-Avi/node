@@ -1,18 +1,21 @@
 {{!< main}}
 
-	<header>
-		<h1>{{ title }}</h1>
-	</header>
+	<div class="jumbotron">
+		<div class="container">
+			<h1>Imageboard</h1>
+			<p>{{ message }}</p>
+		</div>
+	</div>
 
-	<section>
-		<p>{{ message }}</p>
-	</section>
+	<div class="container">
 
 	{{#articles}}
-	<article>
-		<h2>{{title}}</h2>
-		<p>{{content}}</p>
-	</article>
+	<div class="row">
+		<div class="col-md-4">
+			<h2>{{title}}</h2>
+			<p>{{content}}</p>
+		</div>
+	</div>
 	{{/articles}}
 
-	<a href="/article/add">Add Article</a>
+	</div>
