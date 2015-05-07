@@ -13,9 +13,21 @@ var articleSchema = mongoose.Schema({
 
 var Article = mongoose.model('Article', articleSchema);
 
+var imageSchema = mongoose.Schema({
+	data: Buffer,
+	contentType: String,
+	fileName: String,
+	title: String
+});
+
+var Image = mongoose.model('Image', imageSchema);
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
 	console.log("init DB done.");
 });
 
-module.exports = { Article: Article };
+module.exports = { 
+	Article: Article,
+	Image: Image
+};
