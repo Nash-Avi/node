@@ -27,6 +27,19 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.get('/get/:id', function(req, res) {
+	var imageId = req.params.id;
+
+	var query = data.Image.findOne({_id: imageId.toObjectId()}).select('data contentType');
+
+	query.exec(function(err, image) {
+		if (err) return console.error(err);
+
+		res.contentType(image.contentType);
+		res.send(image.data);
+	});
+});
+
 router.get('/upload', function(req, res) {
 	res.render('image/upload');
 });

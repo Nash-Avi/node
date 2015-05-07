@@ -5,6 +5,13 @@ var express = require('express'),
 	router_image = require('./routes/image');
 
 // -----------------------------
+// Library type things that shouldn't be here
+String.prototype.toObjectId = function() {
+	var ObjectId = (require('mongoose').Types.ObjectId);
+	return new ObjectId(this.toString());
+};
+
+// -----------------------------
 // Express Setup
 var app = express();
 
