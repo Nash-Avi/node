@@ -2,7 +2,7 @@ var express = require('express'),
 	hbs = require('express-hbs'),
 	router_article = require('./routes/article'),
 	router_index = require('./routes/index');
-	router_upload = require('./routes/upload');
+	router_image = require('./routes/image');
 
 // -----------------------------
 // Express Setup
@@ -20,10 +20,6 @@ app.set('views', __dirname + '/views');
 
 app.use(express.static('static'));
 
-app.use('/article', router_article);
-app.use('/upload', router_upload);
-app.use('/', router_index);
-
 app.use(function(req, res, next) {
 	var userAgent = "", userHost = "";
 
@@ -37,7 +33,9 @@ app.use(function(req, res, next) {
 	next();
 });
 
-
+app.use('/article', router_article);
+app.use('/image', router_image);
+app.use('/', router_index);
 
 var server = app.listen(3000, function() {
 

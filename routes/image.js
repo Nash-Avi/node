@@ -4,11 +4,11 @@ var data = require('../data/data');
 var Busboy = require('busboy');
 var fs = require('fs');
 
-router.get('/', function(req, res) {
-	res.render('upload/index');
+router.get('/upload', function(req, res) {
+	res.render('image/upload');
 });
 
-router.post('/', function(req, res) {
+router.post('/upload', function(req, res) {
 	var busboy = new Busboy({headers: req.headers});
 	var fileBuffer;
 	var fileType;
