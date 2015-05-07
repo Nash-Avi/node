@@ -1,0 +1,15 @@
+{{!< main}}
+
+<div class="container">
+	<h2>Images</h2>
+
+	{{#images}}
+	<div class="row">
+		<div class="col-md-4">
+			<h2>{{title}}</h2>
+			<a href="#">{{fileName}}</a>
+			<img src="/images/getImage/{{id}}" />
+		</div>
+	</div>
+	{{/images}}
+</div>

@@ -4,6 +4,29 @@ var data = require('../data/data');
 var Busboy = require('busboy');
 var fs = require('fs');
 
+router.get('/', function(req, res) {
+
+	var query = data.Image.find({}).select('title fileName');
+
+	query.exec(function(err, images) {
+		if (err) return console.error(err);
+
+		var imageViewModels = [];
+
+		for(var i=0; i<images.length; i++) {
+			imageViewModels.push({
+				title: images[i].title,
+				fileName: images[i].fileName,
+				id: images[i].id
+			});
+		}
+
+		res.render('image/index', {
+			images: imageViewModels	
+		});
+	});
+});
+
 router.get('/upload', function(req, res) {
 	res.render('image/upload');
 });
