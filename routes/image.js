@@ -69,6 +69,22 @@ router.get('/get/:id', function(req, res) {
 	});
 });
 
+router.get('/view/:id', function(req, res) {
+	var imageId = req.params.id;
+
+	var query = data.Image.findOne({_id: imageId.toObjectId()})
+		.select('title');
+
+	query.exec(function(err, image) {
+		res.render('image/view', 
+			{ 
+				title: image.title,
+				id: image.id
+			}
+		);
+	});
+});
+
 router.get('/upload', function(req, res) {
 	res.render('image/upload');
 });
