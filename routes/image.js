@@ -3,6 +3,8 @@ var router = express.Router();
 var data = require('../data/data');
 var Busboy = require('busboy');
 var fs = require('fs');
+var path = require('path');
+var lwip = require('lwip');
 
 router.get('/', function(req, res) {
 
@@ -27,10 +29,37 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.get('/get/:id/thumbnail', function(req, res) {
+	var imageId = req.params.id;
+
+	var query = data.Image.findOne({_id: imageId.toObjectId()})
+		.select('data contentType fileName');
+
+	query.exec(function(err, image) {
+		if (err) return console.error(err);
+
+		var extension = path.extname(image.fileName).slice(1);
+
+		lwip.open(image.data, extension, function(err, lwipImage) {
+			if (err) return console.error(err);
+
+			lwipImage.contain(150, 150, [255, 255, 255, 0], 
+				function(err, processedImage) {
+					processedImage.toBuffer(extension, function(err, buffer) {
+						res.contentType(image.contentType);
+						res.send(buffer);
+					});
+				}
+			);
+		});
+	});
+});
+
 router.get('/get/:id', function(req, res) {
 	var imageId = req.params.id;
 
-	var query = data.Image.findOne({_id: imageId.toObjectId()}).select('data contentType');
+	var query = data.Image.findOne({_id: imageId.toObjectId()})
+		.select('data contentType');
 
 	query.exec(function(err, image) {
 		if (err) return console.error(err);
