@@ -24,7 +24,7 @@ router.get('/', function(req, res) {
 		}
 
 		res.render('image/index', {
-			images: imageViewModels	
+			images: imageViewModels
 		});
 	});
 });
@@ -33,20 +33,25 @@ router.get('/get/:id/thumbnail', function(req, res) {
 	var imageId = req.params.id;
 
 	var query = data.Image.findOne({_id: imageId.toObjectId()})
-		.select('data contentType fileName');
+		.select('data contentType fileName thumbnail');
 
 	query.exec(function(err, image) {
 		if (err) return console.error(err);
+
+		res.contentType(image.contentType);
+
+		if(image.thumbnail != null) {
+			return res.send(image.thumbnail);
+		}
 
 		var extension = path.extname(image.fileName).slice(1);
 
 		lwip.open(image.data, extension, function(err, lwipImage) {
 			if (err) return console.error(err);
 
-			lwipImage.contain(150, 150, [255, 255, 255, 0], 
+			lwipImage.contain(150, 150, [255, 255, 255, 0],
 				function(err, processedImage) {
 					processedImage.toBuffer(extension, function(err, buffer) {
-						res.contentType(image.contentType);
 						res.send(buffer);
 					});
 				}
@@ -76,8 +81,8 @@ router.get('/view/:id', function(req, res) {
 		.select('title');
 
 	query.exec(function(err, image) {
-		res.render('image/view', 
-			{ 
+		res.render('image/view',
+			{
 				title: image.title,
 				id: image.id
 			}
@@ -88,6 +93,30 @@ router.get('/view/:id', function(req, res) {
 router.get('/upload', function(req, res) {
 	res.render('image/upload');
 });
+
+function processThumbnail(imageId) {
+	var query = data.Image.findOne({_id: imageId.toObjectId()})
+		.select('data contentType fileName');
+
+	query.exec(function(err, image) {
+		if (err) return console.error(err);
+
+		var extension = path.extname(image.fileName).slice(1);
+
+		lwip.open(image.data, extension, function(err, lwipImage) {
+			if (err) return console.error(err);
+
+			lwipImage.contain(150, 150, [255, 255, 255, 0],
+				function(err, processedImage) {
+					processedImage.toBuffer(extension, function(err, buffer) {
+						data.Image.update({_id: imageId.toObjectId()},
+							{thumbnail: buffer}).exec();
+					});
+				}
+			);
+		});
+	});
+}
 
 router.post('/upload', function(req, res) {
 	var busboy = new Busboy({headers: req.headers});
@@ -109,8 +138,7 @@ router.post('/upload', function(req, res) {
 		});
 	});
 	busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-		postedFields[fieldname] = val;	
-
+		postedFields[fieldname] = val;
 	});
 	busboy.on('finish', function() {
 		var image = new data.Image;
@@ -124,6 +152,8 @@ router.post('/upload', function(req, res) {
 				console.log(err);
 				return res.sendStatus(400);
 			}
+
+			processThumbnail(image.id);
 
 			res.redirect('/');
 		});

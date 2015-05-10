@@ -15,6 +15,7 @@ var Article = mongoose.model('Article', articleSchema);
 
 var imageSchema = mongoose.Schema({
 	data: Buffer,
+	thumbnail: Buffer,
 	contentType: String,
 	fileName: String,
 	title: String
@@ -27,7 +28,7 @@ db.once('open', function(callback) {
 	console.log("init DB done.");
 });
 
-module.exports = { 
+module.exports = {
 	Article: Article,
 	Image: Image
 };
