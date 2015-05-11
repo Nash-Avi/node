@@ -24,7 +24,8 @@ router.get('/', function(req, res) {
 		}
 
 		res.render('image/index', {
-			images: imageViewModels
+			images: imageViewModels,
+			successMessage: req.session.successMessage
 		});
 	});
 });
@@ -155,7 +156,9 @@ router.post('/upload', function(req, res) {
 
 			processThumbnail(image.id);
 
-			res.redirect('/');
+			req.session.successMessage = "Image has been uploaded.";
+
+			res.redirect('/image');
 		});
 	});
 

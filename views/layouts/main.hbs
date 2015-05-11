@@ -8,7 +8,8 @@
 	<title>Node Imageboard</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-	<link href="/site.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/site.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" type="text/css" />
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,8 +27,11 @@
 
 	{{{body}}}
 
+	<input type="hidden" id="message_success" value="{{successMessage}}" />
+
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script src="/scripts/messages.js"></script>
 </body>
 </html>

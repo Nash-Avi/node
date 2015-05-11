@@ -1,8 +1,10 @@
 var express = require('express'),
 	hbs = require('express-hbs'),
 	router_article = require('./routes/article'),
-	router_index = require('./routes/index');
-	router_image = require('./routes/image');
+	router_index = require('./routes/index'),
+	router_image = require('./routes/image'),
+	session = require('express-session'),
+	MongoStore = require('connect-mongo')(session);
 
 // -----------------------------
 // Library type things that shouldn't be here
@@ -13,6 +15,8 @@ String.prototype.toObjectId = function() {
 
 // -----------------------------
 // Express Setup
+
+// View Engine
 var app = express();
 
 app.set('view engine', 'hbs');
@@ -25,6 +29,21 @@ app.engine('hbs', hbs.express4({
 
 app.set('views', __dirname + '/views');
 
+// Session Management
+app.use(session({
+	secret: 'abcdefg1234567',
+
+	// Default options that are going to be changing
+	// added from runtime warning message.
+	// What do they do?
+	saveUninitialized: true,
+ 	resave: true,
+
+  store: new MongoStore({url: 'mongodb://localhost/SimpleAppSession'})
+}));
+
+// ---------------------------
+// Routes
 app.use(express.static('static'));
 
 app.use(function(req, res, next) {
