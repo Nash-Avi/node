@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var data = require('../data/data');
+var BaseViewModel = require('../lib/base-viewmodel');
 
 router.get('/', function(req, res, next) {
 	data.Article.find(function(err, articles) {
 		if (err) return console.error(err);
-		
-		res.render('home', {
+
+		res.render('home', new BaseViewModel(req, {
 			title: 'Hello Express!',
 			message: 'Welcome to my first express app!',
 			articles: articles
-		});
+		}));
 	});
 });
 
@@ -26,7 +27,7 @@ router.get('/init', function(req, res) {
 	});
 	article2.save(saveHandler);
 
-	res.send("Data Initialized.");	
+	res.send("Data Initialized.");
 });
 
 function saveHandler(err, obj) {

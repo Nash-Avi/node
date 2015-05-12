@@ -18,6 +18,8 @@ router.post('/add', urlEncodedParser, function(req, res) {
 	});
 	newArticle.save();
 
+	req.session.successMessage = "Article has been added.";
+
 	res.redirect('/');
 });
 

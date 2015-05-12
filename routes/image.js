@@ -5,6 +5,7 @@ var Busboy = require('busboy');
 var fs = require('fs');
 var path = require('path');
 var lwip = require('lwip');
+var BaseViewModel = require('../lib/base-viewmodel');
 
 router.get('/', function(req, res) {
 
@@ -23,10 +24,10 @@ router.get('/', function(req, res) {
 			});
 		}
 
-		res.render('image/index', {
+		res.render('image/index', new BaseViewModel(req, {
 			images: imageViewModels,
 			successMessage: req.session.successMessage
-		});
+		}));
 	});
 });
 
@@ -82,12 +83,12 @@ router.get('/view/:id', function(req, res) {
 		.select('title');
 
 	query.exec(function(err, image) {
-		res.render('image/view',
+		res.render('image/view', new BaseViewModel(req,
 			{
 				title: image.title,
 				id: image.id
 			}
-		);
+		));
 	});
 });
 
